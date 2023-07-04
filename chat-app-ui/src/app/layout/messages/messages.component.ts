@@ -12,11 +12,11 @@ import { ChannelService } from '../../shared/service/channel.service';
 export class MessagesComponent implements OnInit {
 
   private filteredMessages: Array<Message> = [];
-  private newMessage: string="";
-  private channel: string="";
+  private newMessage: string;
+  private channel: string;
 
   @Input()
-  private username: string="";
+  private username: string;
 
   constructor(private stompService: RxStompService,
     private messageService: MessageService,
@@ -55,6 +55,6 @@ export class MessagesComponent implements OnInit {
 
   scrollToBottom() {
     const msgContainer = document.getElementById('msg-container');
-    msgContainer!.scrollTop = msgContainer!.scrollHeight;
+    msgContainer.scrollTop = msgContainer.scrollHeight;
   }
 }

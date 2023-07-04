@@ -20,11 +20,9 @@ export class MessageService {
     filterMessages(channel: string): Array<Message> {
         return this.messages.filter(message => channel === message.channel)
             .sort((m1, m2) => {
-                if((m1.timestamp !== undefined) && (m2.timestamp !== undefined)) {
                 if (m1.timestamp > m2.timestamp) {
                     return 1;
                 }
-            }
 
                 return -1;
             });

@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../shared/service/user.service';
 import {
-    SocialAuthService, FacebookLoginProvider,
+    AuthService, FacebookLoginProvider,
     GoogleLoginProvider, SocialUser
 } from 'angularx-social-login';
-
 
 @Component({
     selector: 'app-login',
@@ -14,12 +13,12 @@ import {
 })
 export class LoginComponent implements OnInit {
 
-    message: string="";
-    private user: SocialUser = new SocialUser();
+    message: string;
+    private user: SocialUser;
 
     constructor(private router: Router,
         private userService: UserService,
-        private authService: SocialAuthService) { }
+        private authService: AuthService) { }
 
     ngOnInit() {
         this.authService.authState.subscribe((user) => {
@@ -36,13 +35,13 @@ export class LoginComponent implements OnInit {
             return;
         }
 
-        this.userService.login({ 'id': null, 'username': username, 'connected' : false })
+        this.userService.login({ 'id': null, 'username': username })
             .subscribe(
-                (res:any) => {
+                res => {
                     sessionStorage.setItem('user', username);
                     this.router.navigate(['home']);
                 },
-                (error:any) => {
+                error => {
                     this.message = error.error;
                 });
     }
@@ -57,8 +56,7 @@ export class LoginComponent implements OnInit {
 
     clearData() {
         sessionStorage.removeItem('user');
-        //this.message = null;
-        this.message = "";
+        this.message = null;
     }
 
 }

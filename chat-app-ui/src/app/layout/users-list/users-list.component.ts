@@ -4,7 +4,7 @@ import { User } from '../../shared/model/user';
 import { RxStompService } from '@stomp/ng2-stompjs';
 import { ChannelService } from '../../shared/service/channel.service';
 import { Message } from '../../shared/model/message';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material';
 import { MessageService } from '../../shared/service/message.service';
 import { RxStompState } from '@stomp/rx-stomp';
 
@@ -18,7 +18,7 @@ export class UsersListComponent implements OnInit {
     NEW_USER_LIFETIME: number = 1000 * 5;
 
     @Input()
-    username: string="";
+    username: string;
 
     @Output()
     receiverUpdated = new EventEmitter<string>();
@@ -26,9 +26,9 @@ export class UsersListComponent implements OnInit {
     users: Array<User> = [];
     highlightedUsers: Array<string> = [];
     newConnectedUsers: Array<string> = [];
-    channel: string|null = null;
-    receiver: string|null = null;
-    topicSubscription="";
+    channel: string;
+    receiver: string;
+    topicSubscription;
 
     constructor(private userService: UserService, private stompService: RxStompService,
         private channelService: ChannelService, private snackBar: MatSnackBar,
@@ -36,7 +36,7 @@ export class UsersListComponent implements OnInit {
 
     ngOnInit() {
         this.userService.findUsers().subscribe(
-            (res:any) => {
+            (res: User[]) => {
                 this.users = res;
                 this.initUserEvents();
             }
@@ -52,7 +52,7 @@ export class UsersListComponent implements OnInit {
         }
     }
 
-    startChatWithUser(user:User) {
+    startChatWithUser(user) {
         const channelId = ChannelService.createChannel(this.username, user.username);
         this.channelService.refreshChannel(channelId);
         this.receiver = user.username;
@@ -65,7 +65,7 @@ export class UsersListComponent implements OnInit {
         return this.users.filter(user => user.username !== this.username);
     }
 
-    getUserItemClass(user:User): string {
+    getUserItemClass(user): string {
         let classes: string = 'user-item';
         if (user.username === this.receiver) {
             classes += ' current-chat-user ';
@@ -92,7 +92,7 @@ export class UsersListComponent implements OnInit {
             if (data.username !== this.username) {
                 this.newConnectedUsers.push(data.username);
                 setTimeout((
-                     () => {
+                    function () {
                         this.removeNewUserBackground(data.username);
                     }
                 ).bind(this), this.NEW_USER_LIFETIME);
@@ -116,16 +116,16 @@ export class UsersListComponent implements OnInit {
         this.subscribeToOtherUsers(this.users, this.username);
     }
 
-    removeNewUserBackground(username:string) {
+    removeNewUserBackground(username) {
         this.newConnectedUsers = this.newConnectedUsers.filter(u => u !== username);
     }
 
-    subscribeToOtherUsers(users:User[], username:string) {
+    subscribeToOtherUsers(users, username) {
         const filteredUsers: Array<any> = users.filter(user => username !== user.username);
         filteredUsers.forEach(user => this.subscribeToOtherUser(user));
     }
 
-    subscribeToOtherUser(otherUser:User): string {
+    subscribeToOtherUser(otherUser): string {
         const channelId = ChannelService.createChannel(this.username, otherUser.username);
         this.stompService.watch(`/channel/chat/${channelId}`).subscribe(res => {
             const data: Message = JSON.parse(res.body);

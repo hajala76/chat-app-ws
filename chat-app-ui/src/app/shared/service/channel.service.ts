@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-//import { Md5 } from 'ts-md5/dist/md5';
+import { Md5 } from 'ts-md5/dist/md5';
 import { Subject, Observable } from 'rxjs';
-const Md5 = require('ts-md5/dist/md5');
 
 @Injectable()
 export class ChannelService {
@@ -25,7 +24,7 @@ export class ChannelService {
   }
 
   removeChannel() {
-    this.channel.next("");
+    this.channel.next();
   }
 
   getChannel(): Observable<any> {
