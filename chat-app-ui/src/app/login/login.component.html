@@ -16,7 +16,7 @@
   <mat-grid-tile>
     <button mat-raised-button class="full-width" (click)="connect(username)">Connect</button>
   </mat-grid-tile>
-  <mat-grid-tile>
+ <!-- <mat-grid-tile>
     <div class="login-header" style="font: italic bold 18px/30px Georgia, serif;">
       Or Login with
     </div>
@@ -26,7 +26,7 @@
     <button mat-icon-button (click)="signInWithFB()">
       <img src="assets/img/social-fb.png" height="100%">
     </button>
-  </mat-grid-tile>
+  </mat-grid-tile> -->
   <mat-grid-tile *ngIf="message !== undefined && message !== null">
     <span class="error-message">
       {{message}}

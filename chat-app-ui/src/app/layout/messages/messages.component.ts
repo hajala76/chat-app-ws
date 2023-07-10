@@ -43,6 +43,7 @@ export class MessagesComponent implements OnInit {
             'content': this.newMessage
           })
       });
+      //console.log(this.channel);
       this.newMessage = '';
       this.scrollToBottom();
     }
